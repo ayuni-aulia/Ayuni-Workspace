@@ -864,20 +864,23 @@
         sections.forEach(section => {
           const sectionTop = section.offsetTop;
         
-          if (scrollY >= (sectionTop - 150)) { 
+          if (scrollY >= (sectionTop - window.innerHeight / 3)) { 
             current = section.getAttribute('id');
           }
         });
 
+        if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight - 50) {
+          current = 'contact';
+        }
+
         navLinks.forEach(link => {
           link.classList.remove('active'); 
-          if (link.getAttribute('href').includes(current)) {
+          if (current && link.getAttribute('href') === '#' + current) {
             link.classList.add('active'); 
           }
         });
       });
     });
-
   </script>
 
 </body>
