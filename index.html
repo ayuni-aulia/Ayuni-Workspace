@@ -679,6 +679,23 @@
         </div>
 
         <div class="card" onclick="openModal(
+          'assets/project-saucedemo2.png', 
+          'E-Commerce Automation Testing Suite', 
+          'Personal Project, Automation Testing, QA Engineering',
+          'Project Overview:\nAutomation testing for an e-commerce platform using Cypress and JavaScript. Features include automated test scripts for critical user paths, including secure login via external data fixtures and a complete end-to-end checkout flow. Designing both positive and negative test scenarios ensures the web application functions correctly and handles errors efficiently.\n\nHard Skills: Automated E2E Testing, Cypress Framework, JavaScript, QA Test Documentation.\n\nSoft Skills: Logical Thinking, Independent Problem Solving, High Attention to Detail.',
+          'https://app.notion.com/p/Automation-Testing-Web-E-Commerce-Saucedemo-Using-Cypress-39a7c2e07a6880e3ad17cba824a357ae?source=copy_link'
+        )">
+          <div class="card-img">
+            <img src="assets/project-saucedemo.png" alt="E-Commerce Automation Testing">
+          </div>
+          <div class="card-body">
+            <span class="tag">Personal Project</span>
+            <h3>E-Commerce Automation Testing Suite</h3>
+            <p>An automated testing suite built with Cypress to verify core user journeys, including user authentication and full end-to-end checkout flows.</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal(
           'assets/project-cc2.png', 
           'Cloud-Deployed Food Recipe App', 
           'Course Project, UI/UX Design, UX Architecture',
@@ -823,60 +840,76 @@
   </footer>
 
   <script>
-    const modal = document.getElementById('projectModal');
-    const modalImg = document.getElementById('modalImg');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalTags = document.getElementById('modalTags');
+  const modal = document.getElementById('projectModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalTags = document.getElementById('modalTags');
 
-    function openModal(imgSrc, title, tags, description) {
-      modalImg.src = imgSrc;
-      modalTitle.innerText = title;
-      modalDesc.innerText = description;
+  function openModal(imgSrc, title, tags, description, notionLink) {
+    modalImg.src = imgSrc;
+    modalTitle.innerText = title;
+    
+    modalDesc.innerHTML = description.replace(/\n/g, '<br>');
+    
+    const tagArray = tags.split(', ');
+    modalTags.innerHTML = tagArray.map(tag => {
+      return `<span class="tag" style="margin: 0; margin-right: 8px; margin-bottom: 8px;">${tag}</span>`;
+    }).join('');
+    
+    let linkContainer = document.getElementById('modalLinkContainer');
+    if (!linkContainer) {
       
-      const tagArray = tags.split(', ');
-      modalTags.innerHTML = tagArray.map(tag => {
-        return `<span class="tag" style="margin: 0; margin-right: 8px; margin-bottom: 8px;">${tag}</span>`;
-      }).join('');
+      linkContainer = document.createElement('div');
+      linkContainer.id = 'modalLinkContainer';
+      modalDesc.parentNode.insertBefore(linkContainer, modalDesc.nextSibling);
+    }
+
+    if (notionLink) {
+      linkContainer.innerHTML = `<a href="${notionLink}" target="_blank" style="display: inline-block; margin-top: 15px; color: #007acc; text-decoration: none; font-weight: bold;">View Full Documentation ↗</a>`;
+      linkContainer.style.display = 'block';
+    } else {
+      linkContainer.style.display = 'none'; 
+    }
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModalBtn() {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  function closeModal(event) {
+    if (event.target === modal) {
+      closeModalBtn();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('section, header, footer'); 
+    const navLinks = document.querySelectorAll('.nav-links a'); 
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
       
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
+        if (scrollY >= (sectionTop - 150)) { 
+          current = section.getAttribute('id');
+        }
+      });
 
-    function closeModalBtn() {
-      modal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-
-    function closeModal(event) {
-      if (event.target === modal) {
-        closeModalBtn();
-      }
-    }
-   
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('section, header, footer'); 
-      const navLinks = document.querySelectorAll('.nav-links a'); 
-
-      window.addEventListener('scroll', () => {
-        let current = '';
-
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-        
-          if (scrollY >= (sectionTop - 150)) { 
-            current = section.getAttribute('id');
-          }
-        });
-
-        navLinks.forEach(link => {
-          link.classList.remove('active'); 
-          if (link.getAttribute('href').includes(current)) {
-            link.classList.add('active'); 
-          }
-        });
+      navLinks.forEach(link => {
+        link.classList.remove('active'); 
+        if (link.getAttribute('href').includes(current)) {
+          link.classList.add('active'); 
+        }
       });
     });
+  });
 
   </script>
 
